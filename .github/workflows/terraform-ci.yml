@@ -36,13 +36,21 @@ jobs:
       - name: Terraform validate
         run: terraform validate -no-color
 
-      - name: Run tflint
-        uses: tflint/actions@v2
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
         with:
-          args: --error-with-issues
+          tflint_version: "6.2.1"   # or pin a specific version
+
+      - name: Initialize TFLint plugins
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run TFLint
+        run: tflint --error-with-issues
 
       - name: Run tfsec security scan
-        uses: aquasecurity/tfsec-action@v2
+        uses: aquasecurity/tfsec-action@v1.0.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          format: githubs
+          format: github
