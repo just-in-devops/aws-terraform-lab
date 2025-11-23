@@ -37,12 +37,12 @@ jobs:
         run: terraform validate -no-color
 
       - name: Run tflint
-        uses: terraform-linters/tflint-action@v1
+        uses: tflint/actions@v2
         with:
           args: --error-with-issues
 
       - name: Run tfsec security scan
-        uses: aquasecurity/tfsec-action@v1
+        uses: aquasecurity/tfsec-action@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           format: githubs
